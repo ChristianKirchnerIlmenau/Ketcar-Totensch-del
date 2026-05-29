@@ -1,0 +1,13 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "pio": true,
+        "/^& \"e:/GitHub/Ketcar Totenschädel/\\.venv/Scripts/platformio\\.exe\" device monitor -d \"e:/GitHub/Ketcar Totenschädel\" -b 115200 -p COM9$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^& \"e:/GitHub/Ketcar Totenschädel/\\.venv/Scripts/platformio\\.exe\" run -d \"e:/GitHub/Ketcar Totenschädel\" -e pro16 -t upload --upload-port COM9$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
