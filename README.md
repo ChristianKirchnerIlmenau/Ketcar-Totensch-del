@@ -1,40 +1,61 @@
 # KetCar Totenschaedel Firmware Workspace
 
-This workspace contains a minimal Arduino/PlatformIO setup for the KetCar motion light project.
+Stand: 03.06.2026
 
-## What is included
+Dieses Workspace enthaelt die Arduino/PlatformIO-Firmware fuer die bewegungsgetriggerte KetCar-Beleuchtung.
 
-- Arduino firmware for ATmega328P (`src/main.cpp`)
-- MPU6050 interrupt wake-up handling (INT pin on D2)
-- Retriggerable light window (`5s` on each motion event)
-- Deep sleep between events
+## Enthaltene Funktion
 
-## Default pin mapping
+- Arduino-Firmware fuer ATmega328P in src/main.cpp
+- MPU6050 Motion-Interrupt als Wakeup-Quelle (INT auf D2)
+- Retriggerbares Lichtfenster von 5s pro Bewegungsereignis
+- Power-Down Sleep ohne aktives Licht
+- 2x RGB-LED Ansteuerung mit PWM-Breathing-Effekt
+- Serielle Diagnoseausgaben (Heartbeat, Wake/Sleep, Motion-Events)
 
-- `MPU6050 SDA` -> `A4`
-- `MPU6050 SCL` -> `A5`
-- `MPU6050 INT` -> `D2`
-- `LED left` -> `D9` (with `120 ohm` resistor)
-- `LED right` -> `D10` (with `120 ohm` resistor)
+## Aktuelle Pinbelegung
 
-## Build and flash
+MPU6050:
+- SDA -> A4
+- SCL -> A5
+- INT -> D2 (INT0)
 
-1. Install PlatformIO in VS Code.
-2. Select the environment in `platformio.ini` if needed.
-3. Build:
+RGB LED 1:
+- Blau -> D9
+- Rot -> D10
+- Gruen -> D11
+
+RGB LED 2:
+- Blau -> D3
+- Rot -> D5
+- Gruen -> D6
+
+Hinweis: Die Farbzuordnung D9/D10/D11 wurde per Selbsttest bestaetigt und ist bereits in der Firmware hinterlegt.
+
+## Build und Upload
+
+1. PlatformIO in VS Code installieren.
+2. Falls noetig das Ziel-Environment in platformio.ini waehlen.
+3. Build ausfuehren:
 
 ```bash
 pio run
 ```
 
-4. Upload:
+4. Flashen:
 
 ```bash
 pio run -t upload
 ```
 
-## Board configuration
+5. Serielle Ausgabe beobachten:
 
-The default setup targets `pro8MHzatmega328` for low-power operation.
+```bash
+pio device monitor
+```
 
-If you run a `5V / 16MHz` Pro Mini, switch to the `pro16` environment in `platformio.ini`.
+## Board-Konfiguration
+
+Standard ist pro8 (pro8MHzatmega328) fuer stromsparenden Betrieb.
+
+Alternativ steht pro16 (pro16MHzatmega328) fuer 5V/16MHz Pro Mini zur Verfuegung.

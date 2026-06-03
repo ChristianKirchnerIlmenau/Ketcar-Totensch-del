@@ -1,7 +1,9 @@
 # KetCar-Totenschaedel Pinbelegung und Testprotokoll
 
+Stand: 03.06.2026
+
 ## Ziel
-- Minimal robuste Umsetzung mit Arduino Pro Mini 328P, MPU6050 (GY-521), 2x rote LED, 2x LiPo parallel.
+- Minimal robuste Umsetzung mit Arduino Pro Mini 328P, MPU6050 (GY-521), 2x RGB-LED, 2x LiPo parallel.
 - Wakeup ueber MPU6050-Interrupt.
 - Leuchtdauer 5s, Reset der Laufzeit bei neuer Bewegung.
 
@@ -11,11 +13,12 @@
 - MPU6050 SDA -> A4.
 - MPU6050 SCL -> A5.
 - MPU6050 INT -> D2 (INT0, externer Interrupt fuer Wakeup).
-- LED links Anode -> D9 ueber 120 Ohm, Kathode -> GND.
-- LED rechts Anode -> D10 ueber 120 Ohm, Kathode -> GND.
+- RGB LED 1: Blau -> D9, Rot -> D10, Gruen -> D11.
+- RGB LED 2: Blau -> D3, Rot -> D5, Gruen -> D6.
 
 Hinweise:
-- Zwei getrennte Vorwiderstaende, einer pro LED.
+- Bei diskreten LEDs immer ein Vorwiderstand pro LED-Kanal verwenden.
+- Die aktuelle Firmware nutzt PWM-faehige Pins fuer beide RGB-Gruppen.
 - Falls 3.3V-Betrieb: Pegel und Board-Takt konsistent halten.
 - Falls 5V-Betrieb: MPU6050-Modulversorgung und Pegel des verwendeten Breakouts pruefen.
 
@@ -29,10 +32,10 @@ Hinweise:
 - Sleep-Grundzustand: MCU in Power-Down.
 - Bewegung erzeugt INT -> MCU wacht auf.
 - ISR setzt nur motion_flag.
-- Main setzt active_until = now + 5000ms.
-- LEDs EIN solange now < active_until.
+- Main prueft INT_STATUS (Motion-Bit) und setzt active_until = now + 5000ms.
+- LEDs aktiv solange now < active_until, mit dynamischem RGB-Breathing.
 - Neues Event vor Ablauf setzt active_until erneut.
-- Ohne neues Event nach 5s: LEDs AUS, zurueck in Sleep.
+- Ohne neues Event nach 5s: LEDs AUS, zurueck in Sleep nach Guard-Zeit.
 
 ## Kompaktes Bring-up Testprotokoll
 
@@ -75,6 +78,14 @@ Hinweise:
 - Soll:
   - Licht bleibt bis etwa t=8s an.
 
+### Test 5b: RGB-Pin-Mapping Selbsttest
+- Ziel: Farbzuordnung und Verdrahtung sicher bestaetigen.
+- Schritt:
+  - Firmware starten, integrierten RGB-Selbsttest abwarten.
+  - Beobachten, ob die Kanaele in Reihenfolge D9, D10, D11 (und gespiegelt D3, D5, D6) schalten.
+- Soll:
+  - D9 und D3 zeigen Blau, D10 und D5 zeigen Rot, D11 und D6 zeigen Gruen.
+
 ### Test 6: Ruhefall ohne Bewegung
 - Ziel: Rueckkehr in Sleep stabil.
 - Schritt:
@@ -103,7 +114,7 @@ Hinweise:
   - I_active und I_sleep messen.
   - Gegen Planung vergleichen.
 - Soll:
-  - I_active grob nahe 36.8mA.
+  - I_active liegt im erwarteten Bereich der realen RGB-Konfiguration.
   - I_sleep grob nahe 3.6mA konservativ oder besser.
 
 ## Abnahmeentscheidung

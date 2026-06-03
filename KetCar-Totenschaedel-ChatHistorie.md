@@ -1,7 +1,7 @@
 # KetCar-Totenschaedel ChatHistorie
 
 ## Metadaten
-- Datumskontext: 29.05.2026
+- Datumskontext: 03.06.2026
 - Zielprojekt: Akku-Effektbeleuchtung fuer Ketcar, ausgeloest durch Bewegung
 - Endentscheidung: Arduino-only, kein ESP, kein WLAN, kein OTA, kein Home Assistant
 
@@ -34,8 +34,8 @@
 - Akku: 3.7V LiPo, 2000mAh pro Zelle.
 - Varianten diskutiert: 1, 2 oder 4 Zellen.
 - Festgelegt: 2 Zellen parallel, also 4000mAh Gesamt.
-- LEDs: 2x 5mm rot, Vorwaertsspannung ca. 2.0V.
-- Vorwiderstand final: 120 Ohm je LED.
+- LEDs: aktuell 2x RGB-LED ueber 6 PWM-Ausgaenge in der Firmware.
+- Frueheres Konzept 2x rot mit 120 Ohm bleibt als Vergleichsbasis fuer Energiebudget dokumentiert.
 - Leuchtdauer final: 5 Sekunden je Trigger.
 
 ## Lastprofil (final)
@@ -66,9 +66,11 @@ Laufzeit mit 2x2000mAh (4000mAh):
 - ISR bleibt minimal und setzt nur ein Bewegungsflag.
 - Hauptlogik verwaltet Deadline:
   - active_until = now + 5000ms.
-  - LEDs an solange now < active_until.
+  - LEDs aktiv solange now < active_until.
   - neues Ereignis setzt Deadline erneut.
 - Nach Ablauf: LEDs aus, Interruptquelle quittieren, zurueck in Sleep.
+- Erweiterung: Motion-Level wird aus ACCEL-Rohdaten geschaetzt und steuert die Geschwindigkeit des RGB-Breathing.
+- Erweiterung: Heartbeat-, Wake-, ISR- und Spurious-IRQ-Zaehlung per Serial-Log.
 
 ## Abnahme- und Qualitaetskriterien
 - Wakeup aus Sleep bei Bewegung reproduzierbar.
@@ -78,6 +80,7 @@ Laufzeit mit 2x2000mAh (4000mAh):
 - Strommessung aktiv/sleep gegen Planung dokumentiert.
 
 ## Ergebnisstand
-- Planung und Doku fuer Arduino-only ist finalisiert.
-- Energiebudget ist auf finale Parameter umgerechnet.
-- Noch offen: konkrete Pinbelegung und Bring-up/Testablauf als separate kompakte Datei (nun erstellt).
+- Planung und Doku fuer Arduino-only sind konsolidiert.
+- Pinbelegung und Bring-up/Testablauf sind als separate Datei gepflegt.
+- Firmware-Stand beinhaltet MPU-Motion-Interrupt, Sleep/Wakeup und RGB-Breathing mit 5s retriggerbarem Fenster.
+- Noch offen: reale Strommesswerte (active/sleep) als Messprotokoll zur Budget-Validierung ergaenzen.

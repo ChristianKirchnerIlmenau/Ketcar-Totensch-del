@@ -1,0 +1,85 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "PIO: Build (pro16)",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\platformio.exe",
+			"args": [
+				"run",
+				"-d",
+				"${workspaceFolder}",
+				"-e",
+				"pro16"
+			],
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "PIO: Upload (pro16 COM9)",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\platformio.exe",
+			"args": [
+				"run",
+				"-d",
+				"${workspaceFolder}",
+				"-e",
+				"pro16",
+				"-t",
+				"upload"
+			],
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "PIO: Monitor (COM9 115200)",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\platformio.exe",
+			"args": [
+				"device",
+				"monitor",
+				"-d",
+				"${workspaceFolder}",
+				"-b",
+				"115200",
+				"-p",
+				"COM9"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "PIO: Build+Upload (pro16 COM9)",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\platformio.exe",
+			"args": [
+				"run",
+				"-d",
+				"${workspaceFolder}",
+				"-e",
+				"pro16",
+				"-t",
+				"upload"
+			],
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "PIO: Upload (pro16 COM9)",
+			"type": "shell",
+			"command": "${workspaceFolder}\\.venv\\Scripts\\platformio.exe",
+			"args": [
+				"run",
+				"-d",
+				"${workspaceFolder}",
+				"-e",
+				"pro16",
+				"-t",
+				"upload"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}

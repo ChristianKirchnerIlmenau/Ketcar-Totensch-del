@@ -8,6 +8,10 @@
         "/^& \"e:/GitHub/Ketcar Totenschädel/\\.venv/Scripts/platformio\\.exe\" run -d \"e:/GitHub/Ketcar Totenschädel\" -e pro16 -t upload --upload-port COM9$/": {
             "approve": true,
             "matchCommandLine": true
+        },
+        "/^Get-Command pio, platformio -ErrorAction SilentlyContinue \\| Select-Object Name, Source \\| Format-Table -AutoSize$/": {
+            "approve": true,
+            "matchCommandLine": true
         }
     }
 }
